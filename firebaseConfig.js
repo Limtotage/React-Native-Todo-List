@@ -3,7 +3,7 @@ import "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyA0P8EED6V6-udzY0FvushXRNOorL9nf3k',
+  apiKey: 'YOUR_API_KEY',
   authDomain: 'reactnativetestapp-cc551.firebaseapp.com',
   projectId: 'reactnativetestapp-cc551',
   storageBucket: 'reactnativetestapp-cc551.firebasestorage.app',
