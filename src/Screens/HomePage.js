@@ -9,12 +9,18 @@ import {
 } from 'react-native';
 import { db } from '../../firebaseConfig';
 import { logout } from '../redux/userSlice';
-import { setUserInput, saveData } from '../redux/dataSlice';
+import {
+  setUserInput,
+  saveData,
+  updateData,
+  deleteData,
+} from '../redux/dataSlice';
 import { CustomButton } from '../components/index.js';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import Animated, {
   BounceIn,
   FlipInYRight,
@@ -23,28 +29,9 @@ import Animated, {
 
 const HomePage = () => {
   const { data, userInput } = useSelector((state) => state.data);
+
   const dispatch = useDispatch();
 
-  console.log('first', userInput);
-
-  // const deleteData = async (value) => {
-  //   try {
-  //     await db.collection('ReactNativeTestApp').doc(value).delete();
-  //     console.log('Data Deleted Successfully.');
-  //   } catch (error) {
-  //     console.error('Data Cant Deleted: ', error);
-  //   }
-  // };
-  // const updateData = async (value) => {
-  //   try {
-  //     await db.collection('ReactNativeTestApp').doc(value).update({
-  //       content: updateTheData,
-  //     });
-  //     console.log('Data Updated Successfully.');
-  //   } catch (error) {
-  //     console.error('Data Cant Updated: ', error);
-  //   }
-  // };
   const hadleLogout = () => {
     dispatch(logout());
   };
@@ -54,22 +41,36 @@ const HomePage = () => {
   const renderItem = ({ item, index }) => {
     return (
       <Animated.View
-        entering={FlipInYRight.delay(150 * (index + 1))} //BounceIn.duration(400) Animasyonları react native reanimated sitesinden görebilirsin
+        entering={FlipInYRight.delay(150 * (index + 1))}
         style={styles.flatlistContainer}>
         <Pressable
           style={styles.iconContainer}
-          onPress={() => [deleteData(item.id), setIsChanged(!isChanged)]}>
-          <AntDesign name="checkcircle" size={24} color="black" />
-          <MaterialCommunityIcons
-            name="checkbox-blank-circle-outline"
-            size={24}
-            color="black"
-          />
+          onPress={() => [
+            console.log('Item Clicked', item.id),
+            dispatch(updateData({ value: item.id, status: item.isCompleted })),
+          ]}>
+          {item.isCompleted ? (
+            <AntDesign name="checkcircle" size={24} color="black" />
+          ) : (
+            <MaterialCommunityIcons
+              name="checkbox-blank-circle-outline"
+              size={24}
+              color="black"
+            />
+          )}
         </Pressable>
         <View style={styles.itemContainer}>
-          <Text style={styles.itemTitle}>{item.title}</Text>
-          <Text>{item.content}</Text>
+          <Text style={styles.itemTitle}>{item.content}</Text>
         </View>
+        <Pressable
+          style={styles.iconContainer}
+          onPress={() => [
+            console.log('Item Clicked', item.id),
+            dispatch(deleteData({ value: item.id })),
+          ]}>
+          <Ionicons name="trash-bin-sharp" size={24} color="black" />
+          )}
+        </Pressable>
       </Animated.View>
     );
   };
@@ -94,7 +95,10 @@ const HomePage = () => {
         <CustomButton
           buttonText="SAVE"
           flexValue={1}
-          handleOnPress={() => dispatch(saveData(userInput))}
+          handleOnPress={() => {
+            if(userInput && userInput.trim() !== "") dispatch(saveData(userInput));
+            console.log(userInput);
+          }}
           pressedColor="lightgray"
           nonPressedColor="blue"
         />
@@ -115,12 +119,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'lightblue',
   },
+
   itemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 5,
     marginLeft: 10,
+    marginBottom: 20,
+    marginTop: 20,
   },
   flatlistContainer: {
+    backgroundColor: 'white',
     borderBottomWidth: 0.3,
+    borderRadius: 10,
     marginVertical: 10,
     flexDirection: 'row',
     flex: 1,

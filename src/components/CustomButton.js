@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 const CustomButton = (props) => {
   return (
     <Pressable
@@ -6,7 +6,7 @@ const CustomButton = (props) => {
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? props.pressedColor : props.nonPressedColor,
-          flex: props.flexValue,
+          ...(props.widthval ? { width: props.widthval } : { flex: props.flexValue }),
         },
         styles.buttonStyle,
       ]}>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonTextStyle: {
-    fontWeigth: 'bold',
+    fontWeight: 'bold',
     color: 'white',
   },
 });

@@ -2,16 +2,16 @@ import { Text, Image, StyleSheet, View } from 'react-native';
 import { Loading, CustomTextInput, CustomButton } from '../components/index.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsLoading, login, autoLogin } from '../redux/userSlice';
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 const LoginPage = ({ navigation }) => {
   const { isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-useEffect(()=>{
-  dispatch(autoLogin())
-},[])
+  useEffect(() => {
+    dispatch(autoLogin());
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}> Welcome </Text>
@@ -35,14 +35,15 @@ useEffect(()=>{
       />
       <CustomButton
         buttonText="Login"
-        setWidth="70%"
+        widthval="30%"
         handleOnPress={() => dispatch(login({ email, password }))}
-        pressedColor="lightgray"
+        pressedColor="gray"
         nonPressedColor="blue"
       />
+      <Text>  </Text>
       <CustomButton
         buttonText="Sign Up"
-        setWidth="30%"
+        widthval="20%"
         handleOnPress={() => navigation.navigate('Signup')}
         pressedColor="gray"
         nonPressedColor="lightgray"

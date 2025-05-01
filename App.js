@@ -20,7 +20,7 @@ const App = () => {
     <RootNavigation/>
   );
 };
-//appwrapperda provider arasına sarılması redux tarafı yüzündendir bu yüzden appi komple provider arasına aldık çünkü eskiden dispatch ve selector kullanmıyorduk. 
+
 const AppWrapper = () => {
   return (
     <Provider store={store}>
